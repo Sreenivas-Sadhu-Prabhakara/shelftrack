@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'">
+  <title>shelftrack — snap a product, track your shop's stock</title>
+  <meta name="description" content="A photo-first stock list for a small shop. Snap a product, set a quantity and reorder level, and see clear LOW badges the moment something runs down. Fast +/− tallies, search, CSV export. Private and offline.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://sreenivas-sadhu-prabhakara.github.io/shelftrack/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="Sreenivas Sadhu Prabhakara">
+  <meta name="keywords" content="inventory app, stock tracker, small shop inventory, photo inventory, low stock alert, reorder level, stock count app, offline inventory, CSV stock export, shop stock list">
+  <meta name="theme-color" content="#F6EFE2" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#231F1A" media="(prefers-color-scheme: dark)">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="shelftrack">
+  <meta property="og:title" content="shelftrack — snap a product, track your shop's stock">
+  <meta property="og:description" content="A photo-first stock list for a small shop. Snap a product, set a reorder level, and see clear LOW badges the moment something runs down. Fast tallies, search, CSV export. Private and fully offline.">
+  <meta property="og:url" content="https://sreenivas-sadhu-prabhakara.github.io/shelftrack/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://sreenivas-sadhu-prabhakara.github.io/shelftrack/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="shelftrack — a photo stock list with a LOW badge on a low item">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="shelftrack — snap a product, track your shop's stock">
+  <meta name="twitter:description" content="A photo-first stock list for a small shop. Snap a product, set a reorder level, and see LOW badges the moment something runs down. Private and fully offline.">
+  <meta name="twitter:image" content="https://sreenivas-sadhu-prabhakara.github.io/shelftrack/og-image.png">
+  <meta name="twitter:image:alt" content="shelftrack — a photo stock list with a LOW badge on a low item">
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- Structured data (data block; not affected by script-src) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "shelftrack",
+    "description": "A client-side, photo-first inventory tracker for tiny shops. Add an item with a photo, quantity, and reorder level, adjust stock with fast plus/minus tallies, get LOW badges when quantity drops to the reorder level, and export the whole list to CSV. Private, offline, no accounts.",
+    "url": "https://sreenivas-sadhu-prabhakara.github.io/shelftrack/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any (modern web browser)",
+    "browserRequirements": "Requires a modern web browser with JavaScript enabled.",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "license": "https://opensource.org/licenses/MIT",
+    "author": { "@type": "Person", "name": "Sreenivas Sadhu Prabhakara" },
+    "softwareVersion": "0.1.0",
+    "featureList": [
+      "Add items with a downscaled product photo captured from the camera or a file",
+      "Track quantity, reorder level, and optional price and unit per item",
+      "Clear LOW badge when quantity is at or below the reorder level",
+      "Fast plus and minus tallies that never drop below zero",
+      "Search by name and sort by low-stock-first",
+      "Export the whole list to a correctly-escaped CSV file",
+      "Local-storage usage estimate with a near-full warning",
+      "Runs 100% offline in your browser"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How does shelftrack decide an item is low on stock?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Every item has a reorder level you set. The moment its quantity is at or below that level, shelftrack shows a LOW badge and can float the item to the top of the list. Set the reorder level to the point where you would normally place a new order."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where are the product photos stored, and will they fill up my phone?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Each photo is shrunk to about 320 pixels on its long edge and saved as a compact JPEG inside your browser's local storage on this device only. shelftrack shows a running storage estimate and warns you as you approach the browser limit, so a typical shop can keep a few hundred items comfortably."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use shelftrack without a camera or on a desktop?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Adding a photo is optional, and the photo control uses a standard file input: on a phone it opens the camera, and on a desktop it opens a file picker. Items without a photo show a neat placeholder tile."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I move my stock list to a spreadsheet or accountant?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use Export CSV. shelftrack writes a standards-compliant CSV with every item's name, quantity, reorder level, price, unit, and low-stock flag, safely escaping any commas, quotes, or line breaks in your names so it opens cleanly in any spreadsheet."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my inventory private?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Completely. shelftrack runs entirely in your browser and stores everything only in this device's local storage. A strict Content-Security-Policy blocks every network request, so nothing about your shop, prices, or photos is ever sent anywhere."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#workspace">Skip to the stock list</a>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="hero__inner">
+      <div class="hero__lead">
+        <a class="brand" href="#top" aria-label="shelftrack home">
+          <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+            <rect x="1" y="1" width="30" height="30" rx="8" class="brand__bg"/>
+            <path class="brand__tag" d="M9 8h8.4a2 2 0 0 1 1.42.6l4.1 4.12a2 2 0 0 1 0 2.82l-6.38 6.36a2 2 0 0 1-2.82 0l-4.1-4.12A2 2 0 0 1 9 16.36V8z"/>
+            <circle class="brand__hole" cx="12.6" cy="11.6" r="1.7"/>
+          </svg>
+          <span class="brand__word">shelftrack</span>
+        </a>
+        <p class="eyebrow">Photo stock list &middot; small-shop inventory &middot; offline</p>
+        <h1 class="hero__title">Snap a product, <span class="hero__accent">track the stock.</span></h1>
+        <p class="hero__lede">
+          A stock list you run from your phone. Photograph an item, set how many you have and when to reorder,
+          and shelftrack flags it <strong>LOW</strong> the moment it runs down. Tap to tally sales and
+          deliveries, search, and export to CSV. No accounts, no network&mdash;every figure stays on this device.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#additem">Add an item</a>
+          <a class="btn btn--quiet" href="#stocklist">See the stock list</a>
+        </div>
+      </div>
+
+      <!-- Signature: a sample price-tag stock card with a LOW badge -->
+      <aside class="tagcard" aria-label="Example stock item">
+        <div class="tagcard__punch" aria-hidden="true"></div>
+        <div class="tagcard__thumb" aria-hidden="true">
+          <svg viewBox="0 0 48 48" class="tagcard__glyph">
+            <rect x="10" y="15" width="28" height="26" rx="2.5"/>
+            <path d="M17 15v-3a7 7 0 0 1 14 0v3"/>
+          </svg>
+        </div>
+        <div class="tagcard__body">
+          <div class="tagcard__row">
+            <span class="tagcard__name">Masala chai&nbsp;·&nbsp;250g</span>
+            <span class="badge badge--low">LOW</span>
+          </div>
+          <p class="tagcard__meta">Reorder at 6 &middot; &#8377;90 / pack</p>
+          <div class="tagcard__qty">
+            <span class="tagcard__qtynum">3</span>
+            <span class="tagcard__qtylabel">in stock</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <main id="workspace">
+    <!-- ============ TOOLBAR ============ -->
+    <section class="toolbar" aria-label="List controls">
+      <div class="toolbar__inner">
+        <div class="toolbar__search">
+          <span class="toolbar__searchicon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+          </span>
+          <label class="sr-only" for="searchInput">Search items by name</label>
+          <input type="search" id="searchInput" class="input input--search" placeholder="Search items…" autocomplete="off" spellcheck="false">
+        </div>
+        <label class="field field--inline" for="sortSelect">
+          <span class="field__label">Sort</span>
+          <span class="select">
+            <select id="sortSelect" aria-label="Sort the stock list">
+              <option value="low">Low stock first</option>
+              <option value="name">Name (A–Z)</option>
+              <option value="qty">Quantity (high–low)</option>
+              <option value="added">Recently added</option>
+            </select>
+          </span>
+        </label>
+        <div class="toolbar__btns">
+          <button type="button" class="btn btn--quiet btn--sm" id="lowOnlyBtn" aria-pressed="false">Low only</button>
+          <button type="button" class="btn btn--quiet btn--sm" id="exportBtn">Export CSV</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <!-- ============ LEFT: ADD / EDIT FORM ============ -->
+      <div class="col col--input">
+        <section class="card" aria-labelledby="formHeading" id="additem">
+          <div class="card__head">
+            <h2 class="card__title" id="formHeading">Add an item</h2>
+            <button type="button" class="btn btn--quiet btn--sm" id="cancelEditBtn" hidden>Cancel</button>
+          </div>
+
+          <form class="itemform" id="itemForm" novalidate>
+            <!-- photo -->
+            <div class="photo">
+              <div class="photo__frame" id="photoFrame">
+                <img class="photo__img" id="photoImg" alt="" hidden>
+                <span class="photo__placeholder" id="photoPlaceholder">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l1.5-2h7L18 7h2a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg>
+                  <span>No photo yet</span>
+                </span>
+              </div>
+              <div class="photo__controls">
+                <label class="btn btn--soft btn--sm photo__pick">
+                  <input type="file" id="photoInput" accept="image/*" capture="environment" hidden>
+                  <span id="photoPickLabel">Take / choose photo</span>
+                </label>
+                <button type="button" class="btn btn--quiet btn--sm" id="clearPhotoBtn" hidden>Remove photo</button>
+              </div>
+              <p class="photo__msg" id="photoMsg" role="status" aria-live="polite" hidden></p>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="itemName">Item name</label>
+              <input type="text" id="itemName" class="input" placeholder="e.g. Masala chai 250g" autocomplete="off" maxlength="80" required>
+            </div>
+
+            <div class="itemform__row">
+              <div class="field">
+                <label class="field__label" for="itemQty">In stock</label>
+                <input type="text" id="itemQty" class="input input--num" inputmode="numeric" placeholder="0" autocomplete="off" required>
+              </div>
+              <div class="field">
+                <label class="field__label" for="itemReorder">Reorder at</label>
+                <input type="text" id="itemReorder" class="input input--num" inputmode="numeric" placeholder="0" autocomplete="off" required>
+              </div>
+            </div>
+
+            <div class="itemform__row">
+              <div class="field">
+                <label class="field__label" for="itemPrice">Price <span class="field__opt">(optional)</span></label>
+                <div class="numwrap">
+                  <span class="numwrap__sym" id="priceSym" aria-hidden="true">&#8377;</span>
+                  <input type="text" id="itemPrice" class="input input--price" inputmode="decimal" placeholder="0.00" autocomplete="off" aria-describedby="priceSym">
+                </div>
+              </div>
+              <div class="field">
+                <label class="field__label" for="itemUnit">Unit <span class="field__opt">(optional)</span></label>
+                <input type="text" id="itemUnit" class="input" placeholder="pack, kg, box…" autocomplete="off" maxlength="16">
+              </div>
+            </div>
+
+            <div class="itemform__actions">
+              <button type="submit" class="btn btn--primary" id="saveItemBtn">Add item</button>
+            </div>
+            <p class="formerror" id="formError" role="alert" aria-live="assertive"></p>
+          </form>
+        </section>
+
+        <!-- storage / currency card -->
+        <section class="card card--aux" aria-labelledby="auxHeading">
+          <div class="card__head">
+            <h2 class="card__title card__title--sm" id="auxHeading">Store &amp; storage</h2>
+          </div>
+          <label class="field field--inline field--cur" for="currencyInput">
+            <span class="field__label">Currency</span>
+            <input type="text" id="currencyInput" class="input input--cur" maxlength="3" value="&#8377;" aria-label="Currency symbol" autocomplete="off" spellcheck="false">
+          </label>
+          <div class="storage" aria-live="polite">
+            <div class="storage__bar"><span class="storage__fill" id="storageFill"></span></div>
+            <p class="storage__text" id="storageText">No items stored yet.</p>
+          </div>
+          <p class="hint">Photos are shrunk to about 320px and saved on this device only. If storage gets tight, remove a few photos.</p>
+        </section>
+      </div>
+
+      <!-- ============ RIGHT: STOCK LIST ============ -->
+      <div class="col col--output">
+        <section class="card card--list" aria-labelledby="listHeading" id="stocklist">
+          <div class="card__head">
+            <h2 class="card__title" id="listHeading">Stock list</h2>
+            <span class="card__count" id="itemCount">0</span>
+            <span class="card__lowtag" id="lowTag" hidden></span>
+          </div>
+          <ul class="stock" id="stockList"></ul>
+          <p class="empty" id="listEmpty">No items yet. Add your first product on the left.</p>
+          <p class="empty" id="searchEmpty" hidden>No items match your search.</p>
+        </section>
+      </div>
+    </div>
+
+    <!-- toast -->
+    <p class="toast" id="toast" role="status" aria-live="polite" hidden></p>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="foot">
+    <div class="foot__inner">
+      <p class="foot__disclaimer">
+        <strong>A simple stock aid for a small shop &mdash; not an accounting, tax, or point-of-sale system.</strong>
+        shelftrack does not value your inventory for accounts, handle payments, or replace a stocktake. Its figures
+        are a convenience for your own reference&mdash;always count and verify before you order or reconcile.
+        Runs entirely in your browser &mdash; nothing you enter leaves this device.
+      </p>
+      <p class="foot__meta">
+        <span>Works 100% offline</span><span class="foot__dot">&middot;</span>
+        <span>No network, no accounts</span><span class="foot__dot">&middot;</span>
+        <span>Saved only on your device</span><span class="foot__dot">&middot;</span>
+        <span>MIT&nbsp;License</span><span class="foot__dot">&middot;</span>
+        <span>&copy; 2026 Sreenivas&nbsp;Sadhu&nbsp;Prabhakara</span>
+      </p>
+    </div>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "shelftrack",
+  "short_name": "shelftrack",
+  "description": "A photo-first stock list for a tiny shop: snap a product, track quantity and reorder level, and get LOW badges the moment stock runs down. Private, offline, no accounts.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#F6EFE2",
+  "theme_color": "#A85D12",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

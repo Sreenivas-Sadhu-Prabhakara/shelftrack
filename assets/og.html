@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  :root {
+    --paper:  #F6EFE2;
+    --paper2: #FBF7EF;
+    --ink:    #2E2820;
+    --ink-soft:#5C5245;
+    --ink-faint:#7A6F5F;
+    --rule:   #E1D7C4;
+    --amber:  #A85D12;
+    --amber-txt:#9C5410;
+    --amber-bright:#E08A2B;
+    --amber-wash:#FBEBD3;
+    --low:    #C24B2E;
+    --low-dk: #B23E22;
+    --low-wash:#F7E2D8;
+    --ok:     #3E7A54;
+    --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Roboto Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    position: relative;
+    background:
+      radial-gradient(1100px 560px at 90% -14%, var(--amber-wash), transparent 58%),
+      linear-gradient(180deg, var(--paper2), var(--paper) 80%);
+    font-family: var(--sans);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* faint shelf rules behind everything */
+  .rules { position: absolute; inset: 0; opacity: 0.45; }
+  .rules line { stroke: var(--rule); stroke-width: 1.4; }
+
+  .frame {
+    position: absolute; inset: 0;
+    padding: 76px 84px;
+    display: grid;
+    grid-template-columns: 1.06fr 0.94fr;
+    gap: 52px;
+    align-items: center;
+  }
+
+  /* left: wordmark + headline */
+  .brand { display: flex; align-items: center; gap: 18px; }
+  .brand svg { width: 64px; height: 64px; }
+  .brand .word { font-size: 46px; font-weight: 800; letter-spacing: -0.035em; color: var(--ink); }
+
+  .headline { margin-top: 42px; }
+  .headline h1 {
+    font-size: 66px; font-weight: 800; letter-spacing: -0.03em;
+    line-height: 1.06; color: var(--ink); max-width: 13ch;
+  }
+  .headline .accent { color: var(--amber-txt); }
+  .headline p {
+    margin-top: 26px;
+    font-size: 27px; font-weight: 500; letter-spacing: -0.01em;
+    color: var(--ink-soft); line-height: 1.34; max-width: 26ch;
+  }
+  .chips { margin-top: 30px; display: flex; gap: 12px; }
+  .chip {
+    font-size: 18px; font-weight: 700; letter-spacing: 0.01em;
+    color: var(--amber-txt); background: var(--amber-wash);
+    border: 1px solid var(--amber-bright); border-radius: 999px;
+    padding: 8px 17px;
+  }
+
+  /* right: a stock-list panel signature */
+  .panel {
+    background: var(--paper2);
+    border: 1px solid var(--rule);
+    border-radius: 20px;
+    box-shadow: 0 34px 66px -30px rgba(46,40,32,0.45);
+    padding: 26px 26px 28px;
+  }
+  .panel__head {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 18px; margin-bottom: 14px;
+    border-bottom: 1.5px solid var(--rule);
+  }
+  .panel__title { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+  .panel__count {
+    font-size: 15px; font-weight: 700; color: var(--ink-soft);
+    background: var(--paper); border: 1px solid var(--rule);
+    border-radius: 999px; padding: 4px 12px;
+  }
+  .panel__low {
+    margin-left: auto; font-size: 15px; font-weight: 800; letter-spacing: 0.05em;
+    color: #fff; background: var(--low); border-radius: 999px; padding: 4px 13px;
+  }
+
+  .item {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 16px;
+    align-items: center; padding: 15px 14px; border-radius: 13px;
+    border: 1px solid var(--rule); background: var(--paper);
+  }
+  .item + .item { margin-top: 12px; }
+  .item.low { border-color: var(--low); background: var(--low-wash); }
+  .thumb {
+    width: 58px; height: 58px; border-radius: 10px;
+    background: var(--amber-wash); border: 1px solid var(--rule);
+    display: grid; place-items: center;
+  }
+  .thumb svg { width: 32px; height: 32px; fill: none; stroke: var(--amber); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .item__body { min-width: 0; }
+  .item__nameline { display: flex; align-items: center; gap: 10px; }
+  .item__name { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .item__badge {
+    font-size: 13px; font-weight: 800; letter-spacing: 0.07em;
+    color: #fff; background: var(--low); border-radius: 999px; padding: 3px 9px;
+  }
+  .item__meta { margin-top: 3px; font-size: 16px; color: var(--ink-soft); }
+  .item__qty { text-align: center; }
+  .item__qtynum { font-size: 34px; font-weight: 800; letter-spacing: -0.03em; color: var(--ink);
+    font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .item.low .item__qtynum { color: var(--low-dk); }
+  .item__qtylabel { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+  <svg class="rules" viewBox="0 0 1200 630" preserveAspectRatio="none" aria-hidden="true">
+    <line x1="0" y1="120" x2="1200" y2="120"/>
+    <line x1="0" y1="230" x2="1200" y2="230"/>
+    <line x1="0" y1="340" x2="1200" y2="340"/>
+    <line x1="0" y1="450" x2="1200" y2="450"/>
+    <line x1="0" y1="560" x2="1200" y2="560"/>
+  </svg>
+
+  <div class="frame">
+    <div>
+      <div class="brand">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="#2E2820"/>
+          <path d="M9 8h8.4a2 2 0 0 1 1.42.6l4.1 4.12a2 2 0 0 1 0 2.82l-6.38 6.36a2 2 0 0 1-2.82 0l-4.1-4.12A2 2 0 0 1 9 16.36V8z" fill="none" stroke="#E08A2B" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="12.6" cy="11.6" r="1.7" fill="none" stroke="#E08A2B" stroke-width="1.6"/>
+        </svg>
+        <span class="word">shelftrack</span>
+      </div>
+      <div class="headline">
+        <h1>Snap a product,<br><span class="accent">track the stock.</span></h1>
+        <p>A photo-first stock list for a tiny shop.</p>
+      </div>
+      <div class="chips">
+        <span class="chip">LOW alerts</span>
+        <span class="chip">CSV export</span>
+        <span class="chip">100% offline</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel__head">
+        <span class="panel__title">Stock list</span>
+        <span class="panel__count">4 items</span>
+        <span class="panel__low">1 low</span>
+      </div>
+
+      <div class="item low">
+        <span class="thumb"><svg viewBox="0 0 48 48"><rect x="10" y="15" width="28" height="26" rx="2.5"/><path d="M17 15v-3a7 7 0 0 1 14 0v3"/></svg></span>
+        <div class="item__body">
+          <div class="item__nameline"><span class="item__name">Masala chai · 250g</span><span class="item__badge">LOW</span></div>
+          <p class="item__meta">Reorder at 6 · &#8377;90.00 / pack</p>
+        </div>
+        <div class="item__qty"><div class="item__qtynum">3</div><div class="item__qtylabel">in stock</div></div>
+      </div>
+
+      <div class="item">
+        <span class="thumb"><svg viewBox="0 0 48 48"><rect x="10" y="15" width="28" height="26" rx="2.5"/><path d="M17 15v-3a7 7 0 0 1 14 0v3"/></svg></span>
+        <div class="item__body">
+          <div class="item__nameline"><span class="item__name">Basmati rice · 5kg</span></div>
+          <p class="item__meta">Reorder at 4 · &#8377;620.00 / bag</p>
+        </div>
+        <div class="item__qty"><div class="item__qtynum">12</div><div class="item__qtylabel">in stock</div></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
