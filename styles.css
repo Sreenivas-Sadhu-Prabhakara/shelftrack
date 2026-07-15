@@ -28,6 +28,11 @@
 
   --ok:       #3E7A54;   /* healthy stock */
 
+  /* text placed ON a filled accent chip/button. White reads well on the
+     light-scheme amber/low fills; in dark mode those fills go pale, so the
+     dark block flips this to the deep paper ink to keep >=4.5:1 contrast. */
+  --on-accent: #fff;
+
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", "Roboto Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
@@ -62,6 +67,9 @@
     --low-wash: rgba(229,118,79,0.16);
 
     --ok:       #5FB07E;
+
+    /* pale accent fills in dark mode need dark text, not white */
+    --on-accent: #231F1A;
 
     --shadow:   0 1px 2px rgba(0,0,0,0.3), 0 12px 30px -18px rgba(0,0,0,0.55);
     --shadow-lift: 0 2px 4px rgba(0,0,0,0.35), 0 22px 46px -22px rgba(0,0,0,0.6);
@@ -116,7 +124,7 @@ p { margin: 0; }
 
 .skip-link {
   position: absolute; left: 12px; top: -60px;
-  background: var(--amber); color: #fff;
+  background: var(--amber); color: var(--on-accent);
   padding: 10px 16px; border-radius: 10px; font-weight: 700;
   z-index: 50; transition: top 0.18s var(--ease); text-decoration: none;
 }
@@ -233,8 +241,8 @@ select:focus-visible,
   border-radius: 999px; padding: 3px 9px; white-space: nowrap;
   border: 1px solid transparent;
 }
-.badge--low { color: #fff; background: var(--low); border-color: var(--low); }
-.badge--out { color: #fff; background: var(--ink); border-color: var(--ink); }
+.badge--low { color: var(--on-accent); background: var(--low); border-color: var(--low); }
+.badge--out { color: var(--paper); background: var(--ink); border-color: var(--ink); }
 
 /* ============================================================
    BUTTONS
@@ -258,7 +266,7 @@ select:focus-visible,
 
 .btn--primary {
   background: var(--amber);
-  color: #fff;
+  color: var(--on-accent);
   box-shadow: 0 10px 24px -12px rgba(168,93,18,0.6);
 }
 .btn--primary:hover { background: var(--amber-dk); }
@@ -408,7 +416,7 @@ select:focus-visible,
 }
 .card__lowtag {
   font-size: 0.7rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
-  color: #fff; background: var(--low); border-radius: 999px; padding: 3px 10px;
+  color: var(--on-accent); background: var(--low); border-radius: 999px; padding: 3px 10px;
 }
 .card--aux .card__head { margin-bottom: 12px; }
 
